@@ -9,5 +9,3 @@ on:
 jobs:
   call-basic-ci:
     uses: natsukiyamada/explore_github/.github/workflows/main.yml@main
-    with:
-      branch: ${{ github.ref }}
