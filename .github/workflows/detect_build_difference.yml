@@ -2,88 +2,10 @@ name: Detect build difference
 
 on:
   push:
-    branches: [release, develop]
+    branches: [develop]
   pull_request:
-    branches: [release, develop]
+    branches: [develop]
+
 jobs:
-  build-on-current-branch:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/setup-node@v3
-        with:
-          node-version: "18"
-      - uses: actions/checkout@v4
-        with:
-          ref: ${{ github.ref }}
-      - run: npm ci
-      - run: npm run build
-      - uses: actions/upload-artifact@v3
-        with:
-          name: ${{ github.sha }}-current
-          path: dist
-
-  build-on-base-branch:
-    runs-on: ubuntu-latest
-    outputs:
-      base_sha: ${{ steps.get-sha.outputs.sha }}
-    steps:
-      - uses: actions/setup-node@v3
-        with:
-          node-version: "18"
-      - name: Checkout base branch
-        uses: actions/checkout@v4
-        with:
-          ref: ${{ github.event.pull_request.base.ref }}
-      - name: Get the latest commit SHA of develop branch
-        id: get-sha
-        run: echo "::set-output name=sha::$(git rev-parse HEAD)"
-      - run: npm ci
-      - run: npm run build
-      - uses: actions/upload-artifact@v3
-        with:
-          name: ${{ steps.get-sha.outputs.sha }}-base
-          path: dist
-
-  detect-build-diff:
-    needs:
-      - build-on-current-branch
-      - build-on-base-branch
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/download-artifact@v3
-        with:
-          name: ${{ github.sha }}-current
-          path: dist-current
-      - name: Download base artifact by SHA from previous job
-        uses: actions/download-artifact@v3
-        with:
-          name: ${{ needs.build-on-base-branch.outputs.base_sha }}-base
-          path: dist-base
-      - name: Get diff
-        run: |
-          diff dist-current dist-base > /tmp/result.txt || echo "Diff detected" > /tmp/diff_flag
-      - name: Comment to PR
-        if: github.event_name == 'pull_request'
-        uses: actions/github-script@v6
-        with:
-          github-token: ${{secrets.GITHUB_TOKEN}}
-          script: |
-            const fs = require('fs')
-            const result = fs.readFileSync('/tmp/result.txt', 'utf8')
-            const commentBody = result.trim() ?
-              '**There are differences** in the build artifacts. **Please test external design** in a test environment.'
-              : '**There are no differences** in the build artifacts. So **it is not necessary to test external design** in a test environment.'
-
-            await github.rest.issues.createComment({
-              issue_number: context.issue.number,
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              body: commentBody
-            })
-      - name: Fail CI for Renovate PRs with differences
-        if: github.event_name == 'pull_request' && github.actor == 'renovate[bot]'
-        run: |
-          if [ -f /tmp/diff_flag ]; then
-            echo "Differences found in build for a Renovate PR. Failing the CI."
-            exit 1
-          fi
+  check-build-difference:
+    uses: natsukiyamada/explore_github/.github/workflows/detect_build_difference.yml@develop
