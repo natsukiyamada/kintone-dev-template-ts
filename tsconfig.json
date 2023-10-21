@@ -1,0 +1,32 @@
+{
+  "compilerOptions": {
+    "target": "ES2015",
+    "module": "esnext",
+    "lib": [
+      "es2020",
+      "dom"
+    ],
+    "checkJs": true,
+    "outDir": "dist",
+    "rootDir": ".",
+    /* Strict Type-Checking Options */
+    "strict": true,
+    /* Additional Checks */
+    "exactOptionalPropertyTypes": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noUncheckedIndexedAccess": true,
+    "noImplicitReturns": true,
+    "noFallthroughCasesInSwitch": true,
+    "forceConsistentCasingInFileNames": true,
+
+    /* Module Resolution Options */
+    "esModuleInterop": true,
+    "moduleResolution": "node",
+    "baseUrl": ".",
+    "allowSyntheticDefaultImports": true,
+  },
+  "files": ["./node_modules/@kintone/dts-gen/kintone.d.ts"],
+  "include": ["src/**/*"],
+  "exclude": ["node_modules", "dist"]
+}

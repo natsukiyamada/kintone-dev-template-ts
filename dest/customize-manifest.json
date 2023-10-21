@@ -1,0 +1,12 @@
+{
+    "app": "220",
+    "scope": "ALL",
+    "desktop": {
+        "js": ["dist/bundle.js"],
+        "css": []
+    },
+    "mobile": {
+        "js": [],
+        "css": []
+    }
+}

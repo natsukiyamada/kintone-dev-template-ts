@@ -1,0 +1,19 @@
+{
+  "baseBranches": ["develop"],
+  "extends": ["config:base"],
+  "timezone": "Asia/Tokyo",
+  "branchConcurrentLimit": 0,
+  "automerge": true,
+  "packageRules": [
+    {
+      "matchUpdateTypes": ["major"],
+      "automerge": false
+    },
+    {
+      "groupName": "husky",
+      "matchPackagePatterns": ["husky"],
+      "rebaseWhen": "conflicted",
+      "automerge": false
+    }
+  ]
+}
