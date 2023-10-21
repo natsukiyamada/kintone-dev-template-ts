@@ -1,4 +1,4 @@
-name: Caller Workflow
+name: CI
 
 on:
   push:
@@ -8,4 +8,4 @@ on:
 
 jobs:
   call-basic-ci:
-    uses: natsukiyamada/explore_github/.github/workflows/main.yml@main
+    uses: natsukiyamada/explore_github/.github/workflows/main.yml@develop
