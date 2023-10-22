@@ -7,6 +7,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "lint": "eslint --ext .ts src/",
     "build": "webpack --mode development",
+    "build:prod": "webpack --mode production",
     "upload": ". ./.env && kintone-customize-uploader dest/customize-manifest.json --base-url $KINTONE_BASE_URL --username $KINTONE_USERNAME --password $KINTONE_PASSWORD",
     "develop": "run-s build upload",
     "prepare": "husky install"
@@ -26,6 +27,7 @@
     "npm-run-all": "^4.1.5",
     "prettier": "^3.0.3",
     "style-loader": "^3.3.1",
+    "terser-webpack-plugin": "^5.3.9",
     "ts-loader": "^9.4.4",
     "typescript": "^5.2.2",
     "webpack": "^5.88.1",
