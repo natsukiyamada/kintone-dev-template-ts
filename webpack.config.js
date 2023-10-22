@@ -1,10 +1,10 @@
-const path = require('path');
+const path = require("path");
+const TerserPlugin = require("terser-webpack-plugin");
 
-module.exports = {
-  mode: 'development',
-  entry: ['./src/index.ts'],
+const config = {
+  entry: ["./src/index.ts"],
   output: {
-    path: path.resolve(__dirname, 'dist'),
+    path: path.resolve(__dirname, "dist"),
     filename: `bundle.js`,
   },
   module: {
@@ -13,7 +13,7 @@ module.exports = {
         test: /\.ts$/,
         use: [
           {
-            loader: 'ts-loader',
+            loader: "ts-loader",
           },
         ],
         exclude: /node_modules/,
@@ -21,7 +21,25 @@ module.exports = {
     ],
   },
   resolve: {
-    extensions: ['.ts', '.js', '.json'],
+    extensions: [".ts", ".js", ".json"],
   },
-  devtool: 'inline-source-map',
+  optimization: {
+    minimize: true,
+    minimizer: [
+      new TerserPlugin({
+        extractComments: false,
+      }),
+    ],
+  },
+};
+
+module.exports = (argv) => {
+  if (argv.mode === "development") {
+    config.devtool = "source-map";
+  }
+
+  if (argv.mode === "production") {
+    config.devtool = false;
+  }
+  return config;
 };
