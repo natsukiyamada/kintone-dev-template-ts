@@ -15,7 +15,7 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "@kintone/customize-uploader": "8.0.1",
+    "@kintone/customize-uploader": "8.0.2",
     "@kintone/dts-gen": "8.0.1",
     "@types/node": "20.8.10",
     "@typescript-eslint/eslint-plugin": "6.9.1",
